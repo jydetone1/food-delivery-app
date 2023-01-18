@@ -1,8 +1,16 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import Categories from '../components/Categories';
 import Featured from '../components/Featured';
-import { Text, View, Image, TextInput, ScrollView } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import sanityClient from '../sanity';
 const { useNavigation } = require('@react-navigation/native');
 import {
   UserIcon,
@@ -13,12 +21,31 @@ import {
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [FeaturedCategory, setFeaturedCategory] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, [navigation]);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(
+        `*[_type == "featured"]{ 
+         ...,
+      resturants[]->{
+        ...,
+        dishes[]->
+      }
+    }`
+      )
+      .then((data) => {
+        setFeaturedCategory(data);
+      });
+  }, []);
+
+  console.log(FeaturedCategory);
 
   return (
     <SafeAreaView className='bg-white pt-5'>
@@ -52,26 +79,10 @@ const HomeScreen = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         <Categories />
-        <Featured
-          id=' 1'
-          title='Featured'
-          description='Discover the best restaurants, cafés, bars and more'
-          FeaturedCategory='Featured'
-        />
 
-        <Featured
-          id=' 2'
-          title='Featured'
-          description='Discover the best restaurants, cafés, bars and more'
-          FeaturedCategory='Featured'
-        />
-
-        <Featured
-          id=' 3'
-          title='Featured'
-          description='Discover the best restaurants, cafés, bars and more'
-          FeaturedCategory='Featured'
-        />
+        {FeaturedCategory?.map((item) => (
+          <Featured key={item._id} item={item} />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
