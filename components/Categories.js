@@ -1,6 +1,22 @@
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import CategoryCard from './CategoryCard';
+import sanityClient from '../sanity';
+
 const Categories = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(
+        `*[_type == "category"]
+    `
+      )
+      .then((data) => {
+        setCategories(data);
+      });
+  }, []);
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -10,33 +26,9 @@ const Categories = () => {
       horizontal
       showsHorizontalScrollIndicator={false}
     >
-      <CategoryCard
-        imgUrl='https://c7.alamy.com/comp/GR76JA/full-table-of-sushi-set-GR76JA.jpg'
-        title='testing'
-      />
-      <CategoryCard
-        imgUrl='https://c7.alamy.com/comp/GR76JA/full-table-of-sushi-set-GR76JA.jpg'
-        title='testing'
-      />
-      <CategoryCard
-        imgUrl='https://c7.alamy.com/comp/GR76JA/full-table-of-sushi-set-GR76JA.jpg'
-        title='testing'
-      />
-
-      <CategoryCard
-        imgUrl='https://c7.alamy.com/comp/GR76JA/full-table-of-sushi-set-GR76JA.jpg'
-        title='testing'
-      />
-
-      <CategoryCard
-        imgUrl='https://c7.alamy.com/comp/GR76JA/full-table-of-sushi-set-GR76JA.jpg'
-        title='testing'
-      />
-
-      <CategoryCard
-        imgUrl='https://c7.alamy.com/comp/GR76JA/full-table-of-sushi-set-GR76JA.jpg'
-        title='testing'
-      />
+      {categories?.map((category) => (
+        <CategoryCard key={category._id} category={category} />
+      ))}
     </ScrollView>
   );
 };

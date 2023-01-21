@@ -25,7 +25,7 @@ const Featured = ({ item }) => {
       .then((data) => {
         setResturants(data?.resturants);
       });
-  }, []);
+  }, [item._id]);
 
   console.log('res', resturants);
   return (
