@@ -7,14 +7,25 @@ import {
   PlusCircleIcon,
 } from 'react-native-heroicons/outline';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToBasket, selectBasketItems } from '../features/basketSlice';
+import {
+  addToBasket,
+  selectBasketItems,
+  removeFromBasket,
+} from '../features/basketSlice';
 
 const Dish = ({ dish }) => {
   const [isPressed, setIsPressed] = useState(false);
-  const items = useSelector(selectBasketItems);
+  const items = useSelector((state) => selectBasketItems(state, dish._id));
   const dispatch = useDispatch();
+
   const addItemsToCart = () => {
     dispatch(addToBasket({ payload: dish }));
+  };
+
+  console.log('items', items);
+  const removeItemsFromCart = () => {
+    if (!items.length > 0) return;
+    dispatch(removeFromBasket({ payload: dish._id }));
   };
   return (
     <>
@@ -45,12 +56,13 @@ const Dish = ({ dish }) => {
           </View>
         </View>
       </TouchableOpacity>
-      {isPressed ? (
+      {isPressed && (
         <View className='bg-white px-4'>
           <View className=' flex-row items-center space-x-2'>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={removeItemsFromCart}>
               <MinusCircleIcon
-                color={items > 0 ? '#00CCBB' : 'gray'}
+                disabled={!!items.length}
+                color={items.length > 0 ? '#00CCBB' : 'gray'}
                 size={40}
               />
             </TouchableOpacity>
@@ -62,7 +74,7 @@ const Dish = ({ dish }) => {
             </TouchableOpacity>
           </View>
         </View>
-      ) : null}
+      )}
     </>
   );
 };

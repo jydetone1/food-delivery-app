@@ -3,7 +3,8 @@
 # Dependencies
 /node_modules
 /.pnp
-.pnp.js
+.pnp.js 
+config.js
 
 # Compiled Sanity Studio
 /dist

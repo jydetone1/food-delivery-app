@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { Text, Image, TouchableOpacity } from 'react-native';
 import { urlFor } from '../sanity';
 
 const CategoryCard = ({ category }) => {

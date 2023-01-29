@@ -1,17 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import Categories from '../components/Categories';
 import Featured from '../components/Featured';
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import { Text, View, Image, TextInput, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import sanityClient from '../sanity';
-const { useNavigation } = require('@react-navigation/native');
+import { useNavigation } from '@react-navigation/native';
 import {
   UserIcon,
   ChevronDownIcon,
@@ -45,8 +38,6 @@ const HomeScreen = () => {
       });
   }, []);
 
-  console.log(FeaturedCategory);
-
   return (
     <SafeAreaView className='bg-white pt-5'>
       <View className='flex-row  pb-3 items-center mx-4 space-x-2'>
@@ -68,7 +59,7 @@ const HomeScreen = () => {
         <UserIcon size={35} color='#00CCBB' />
       </View>
       <View className='flex-row items-center space-x-2 mx-4 mb-3 '>
-        <View className='flex-row  flex-1 space-x-2 bg-gray-200 p-3'>
+        <View className='flex-row items-center flex-1 space-x-2 bg-gray-200 p-3'>
           <MagnifyingGlassIcon size={20} color='gray' />
           <TextInput placeholder='Search' keyboardType='default' />
         </View>
